@@ -1,0 +1,70 @@
+version: "3.9"
+
+networks:
+  londo-test:
+
+services:
+
+  nestjs:
+    container_name: nestjs
+    build: ./../../src/backend/nestjs
+    ports:
+      - "3001:3000"
+    restart: always
+    networks:
+      - londo-test
+
+  express:
+    container_name: express
+    build: ./../../src/backend/express
+    ports:
+      - "3002:3000"
+    restart: always
+    networks:
+      - londo-test
+  
+  express-oracle:
+    container_name: express-oracle
+    build: ./../../src/backend/express-oracle
+    ports:
+      - "3003:3000"
+    restart: always
+    networks:
+      - londo-test
+
+  angular:
+    container_name: angular
+    build: ./../../src/frontend/angular
+    ports:
+      - "4200:80"
+    restart: always
+    networks:
+      - londo-test
+  
+  angular-ssr:
+    container_name: angular-ssr
+    build: ./../../src/frontend/angular-ssr
+    ports:
+      - "4201:4000"
+    restart: always
+    networks:
+      - londo-test
+
+  nginx-proxy:
+    image: nginx:latest
+    container_name: nginx-proxy
+    ports:
+      - "8089:80"
+    volumes:
+      - .nginx/nginx.conf:/etc/nginx/nginx.conf
+      - .nginx/ssl:/etc/nginx/ssl
+      - .nginx/proxy_params:/etc/nginx/proxy_params
+      # - .nginx/waf.conf:/etc/nginx/modsecurity.conf
+    depends_on:
+      - nestjs
+      - angular
+      - angular-ssr
+      - express
+      - express-oracle
+    networks:
+      - londo-test
