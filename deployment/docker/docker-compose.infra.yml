@@ -2,5 +2,27 @@ version: "3.9"
 
 networks:
   infra-net:
+    driver: bridge
+
+volumes:
+  jenkins_home:
 
 services:
+  jenkins:
+    image: jenkins:2.60.3
+    privileged: true
+    ports:
+      - 8080:8080
+      - 50000:50000
+    container_name: jenkins
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/local/bin/docker:/usr/local/bin/docker
+    environment:
+      - JENKINS_SLAVE_AGENT_PORT=50000
+      - JENKINS_UC=https://updates.jenkins.io
+      - JENKINS_UC_EXPERIMENTAL=https://updates.jenkins.io/experimental
+    restart: always
+    networks:
+      - infra-net
