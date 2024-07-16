@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                // Cloner le dépôt
+                git branch: 'main', url: 'git@github.com:Roslyns/londo-exercices.git', credentialsId: 'roslyn-repos-ssh-id'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Ajouter vos étapes de build ici, par exemple :
+                sh 'echo "Building..."'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Ajouter vos étapes de test ici, par exemple :
+                sh 'echo "Running tests..."'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Ajouter vos étapes de déploiement ici, par exemple :
+                sh './run.sh'
+            }
+        }
+    }
+
+    post {
+        always {
+            // Ajouter vos étapes de nettoyage ou de notification ici
+            sh 'echo "Cleaning up..."'
+        }
+    }
+}

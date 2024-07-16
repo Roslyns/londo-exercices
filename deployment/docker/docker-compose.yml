@@ -50,21 +50,21 @@ services:
     networks:
       - londo-test
 
-  nginx-proxy:
-    image: nginx:latest
-    container_name: nginx-proxy
-    ports:
-      - "8089:80"
-    volumes:
-      - .nginx/nginx.conf:/etc/nginx/nginx.conf
-      - .nginx/ssl:/etc/nginx/ssl
-      - .nginx/proxy_params:/etc/nginx/proxy_params
-      # - .nginx/waf.conf:/etc/nginx/modsecurity.conf
-    depends_on:
-      - nestjs
-      - angular
-      - angular-ssr
-      - express
-      - express-oracle
-    networks:
-      - londo-test
+  # nginx-proxy:
+  #   image: nginx:latest
+  #   container_name: nginx-proxy
+  #   ports:
+  #     - "8089:80"
+  #   volumes:
+  #     - .nginx/nginx.conf:/etc/nginx/nginx.conf
+  #     - .nginx/ssl:/etc/nginx/ssl
+  #     - .nginx/proxy_params:/etc/nginx/proxy_params
+  #     # - .nginx/waf.conf:/etc/nginx/modsecurity.conf
+  #   depends_on:
+  #     - nestjs
+  #     - angular
+  #     - angular-ssr
+  #     - express
+  #     - express-oracle
+  #   networks:
+  #     - londo-test
